@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "AiFrontend",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
