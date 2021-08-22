@@ -1,5 +1,5 @@
+import { WifiProviderService } from './../services/wifi-provider.service';
 import { Component } from '@angular/core';
-import { WifiWizard2 } from '@ionic-native/wifi-wizard-2/ngx';
 
 @Component({
   selector: 'app-home',
@@ -7,14 +7,22 @@ import { WifiWizard2 } from '@ionic-native/wifi-wizard-2/ngx';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  constructor(private wifiWizard2: WifiWizard2) {}
-  results = [];
-  async getNetworks() {
-    try {
-      let results = await this.wifiWizard2.scan();
-      this.results = results.map((r) => `${r.BSSID} -> ${r.level}`);
-    } catch (error) {
-      console.error(error);
-    }
+  constructor(private wifiProvider: WifiProviderService) {}
+
+  startService: boolean = false;
+  results: string[] = [];
+  private interval;
+  ok = 0;
+
+  async startScan() {
+    if (this.startService) {
+      await this.wifiProvider.getNetworks();
+      this.interval = setInterval(async () => {
+        const networks = await this.wifiProvider.getNetworks();
+        this.ok++;
+        // console.log(networks);
+        this.results = networks.map((r) => `${r.BSSID} -> ${r.level}`);
+      }, 2100);
+    } else clearInterval(this.interval);
   }
 }
