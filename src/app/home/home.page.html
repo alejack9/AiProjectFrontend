@@ -15,8 +15,3 @@
     <ion-item *ngFor="let data of results"> {{data}} </ion-item>
   </ion-list>
 </ion-content>
-
-<ion-content [fullscreen]="true">
-  <p>Latitude: {{lat}}, Longitude: {{lng}}, Altitude: {{alt}}</p>
-  <ion-button color="primary" (click)="getPosition()">Get Position</ion-button>
-</ion-content>
