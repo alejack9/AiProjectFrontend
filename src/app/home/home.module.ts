@@ -7,9 +7,10 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
   declarations: [HomePage],
-  providers: [WifiWizard2],
+  providers: [WifiWizard2, Geolocation],
 })
 export class HomePageModule {}
