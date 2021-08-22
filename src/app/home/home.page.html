@@ -5,7 +5,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-button color="primary" (click)="getNetworks()">Get Network</ion-button>
+  <ion-toggle
+    color="primary"
+    [(ngModel)]="startService"
+    (ionChange)="startScan()"
+    >Start Scan</ion-toggle
+  >
   <ion-list>
     <ion-item *ngFor="let data of results"> {{data}} </ion-item>
   </ion-list>
