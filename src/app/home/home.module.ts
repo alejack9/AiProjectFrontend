@@ -3,9 +3,10 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 import { BluetoothProviderService } from './../services/bluetooth-provider.service';
 import { BLE } from '@ionic-native/ble/ngx';
-import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
+
 import { WifiProviderService } from './../services/wifi-provider.service';
 import { WifiWizard2 } from '@ionic-native/wifi-wizard-2/ngx';
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -22,7 +23,6 @@ import { HomePageRoutingModule } from './home-routing.module';
     WifiProviderService,
     BluetoothProviderService,
     Geolocation,
-    BluetoothLE,
     BLE,
     GeolocalizationProviderService,
   ],

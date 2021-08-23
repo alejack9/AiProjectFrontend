@@ -1,7 +1,6 @@
 import { identifierModuleUrl } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { BLE } from '@ionic-native/ble/ngx';
-// import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import { Subscription } from 'rxjs';
 @Injectable({
   providedIn: 'root',
