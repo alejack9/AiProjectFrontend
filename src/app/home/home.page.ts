@@ -31,11 +31,18 @@ export class HomePage {
         // console.log(networks);
         this.results = networks.map(
           (r) =>
-            `${r.BSSID} -> ${r.level}` +
-            ` Geo: { lat: ` +
+            `${r.BSSID} -> ${r.level}, ` +
+            ` bluetooth: { id: ` +
+            this.bleProvider.id +
+            ` -> rssi: ` +
+            this.bleProvider.rssi +
+            ` },` +
+            ` pos: { lat: ` +
             geoCoord.coords.latitude +
-            ` lng: ` +
+            `,` +
+            ` long: ` +
             geoCoord.coords.longitude +
+            `,` +
             ` alt: ` +
             geoCoord.coords.altitude +
             ` }`
