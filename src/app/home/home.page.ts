@@ -1,4 +1,5 @@
-import { WifiProviderService } from './../services/wifi-provider.service';
+import { Platform } from '@ionic/angular';
+import { Hotspot } from '@ionic-native/hotspot/ngx';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,22 +8,35 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  constructor(private wifiProvider: WifiProviderService) {}
+  constructor(private platform: Platform, private hotspot: Hotspot) {
+    platform.ready().then(() => {
+      this.ready = true;
+    });
+  }
 
+  private ready = false;
   startService: boolean = false;
   results: string[] = [];
-  private interval;
   ok = 0;
+  errors = 0;
+  empties = 0;
+  lastError;
 
   async startScan() {
-    if (this.startService) {
-      await this.wifiProvider.getNetworks();
-      this.interval = setInterval(async () => {
-        const networks = await this.wifiProvider.getNetworks();
+    if (!this.ready) return (this.startService = false);
+    while (this.startService) {
+      const net = await this.hotspot.scanWifi();
+      console.log('-------------------------------');
+      console.log(net);
+      console.log('-------------------------------');
+      if (net.length === 0) this.empties++;
+      else {
+        this.results = net.map((r) => `${r.BSSID} - ${r.level}`);
         this.ok++;
-        // console.log(networks);
-        this.results = networks.map((r) => `${r.BSSID} -> ${r.level}`);
-      }, 2100);
-    } else clearInterval(this.interval);
+      }
+      await this.waitFor(5000);
+    }
   }
+
+  waitFor = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 }
