@@ -1,3 +1,4 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 
@@ -7,11 +8,18 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 export class GeolocalizationProviderService {
   constructor(private geo: Geolocation) {}
 
-  async getGPSLocation(): Promise<Geoposition> {
-    try {
-      return await this.geo.getCurrentPosition();
-    } catch (e) {
-      console.log(e);
-    }
+  async getLocation(): Promise<{
+    lat: number;
+    long: number;
+    alt: number;
+    accuracy: number;
+  }> {
+    const result = await this.geo.getCurrentPosition();
+    return {
+      lat: result.coords.latitude,
+      long: result.coords.longitude,
+      alt: result.coords.altitude,
+      accuracy: result.coords.accuracy,
+    };
   }
 }

@@ -43,6 +43,9 @@ export class HomePage {
       console.log('WAITING BLUETOOTH DEVICES.................');
       const ble = await this.bleProvider.getBluetoothDevices();
       console.log('WAITING BLUETOOTH DEVICES ................. DONE');
+      console.log('WAITING GPS COORDINATES .................');
+      const gpsCoordinates = await this.geoProvider.getLocation();
+      console.log('WAITING GPS COORDINATES ................. DONE');
       this.ok++;
       // this.results = networks.map(
       //   (r) => `${r.BSSID} -> ${r.level}, `
@@ -55,7 +58,9 @@ export class HomePage {
       net.forEach((val) => {
         console.log(`${val.BSSID} - ${val.level}`);
       });
-      await this.waitFor(5000);
+      console.log('GPS');
+      console.log(JSON.stringify(gpsCoordinates));
+      await this.waitFor(6000);
     }
     // while (this.startService) {
     //   const net = await this.hotspot.scanWifi();
