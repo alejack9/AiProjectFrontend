@@ -13,5 +13,11 @@
   <feature name="Geolocation">
     <param name="android-package" value="org.apache.cordova.geolocation.Geolocation"/>
   </feature>
+
+  <feature name="WifiWizard2">
+    <param name="android-package" value="wifiwizard2.WifiWizard2"/>
+    <param name="onload" value="true"/>
+  </feature>
+
   
 </widget>

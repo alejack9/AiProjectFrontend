@@ -34,36 +34,29 @@ export class HomePage {
   lastError;
 
   async startScan() {
+    if (!this.ready) return (this.startService = false);
     console.log(this.startService);
     while (this.startService) {
+      console.log('WAITING WIFI SIGNALS.................');
+      const net = await this.hotspot.scanWifi();
+      console.log('WAITING WIFI SIGNALS ................. DONE');
       console.log('WAITING BLUETOOTH DEVICES.................');
       const ble = await this.bleProvider.getBluetoothDevices();
-      console.log('................. DONE');
+      console.log('WAITING BLUETOOTH DEVICES ................. DONE');
       this.ok++;
-      // console.log(networks);
       // this.results = networks.map(
       //   (r) => `${r.BSSID} -> ${r.level}, `
       // this.results = ble;
+      console.log('BLUETOOTH');
       ble.forEach((val, key) => {
         console.log(val + ' - ' + key);
       });
+      console.log('WIFI');
+      net.forEach((val) => {
+        console.log(`${val.BSSID} - ${val.level}`);
+      });
+      await this.waitFor(5000);
     }
-    // if (this.startService) {
-    //   this.interval = setInterval(async () => {
-    //     // const networks = await this.wifiProvider.getNetworks();
-    //     // const geoCoord = await this.geoProvider.getLocation();
-    //     console.log('WAITING BLUETOOTH DEVICES.................');
-    //     const ble = await this.bleProvider.getBluetoothDevices();
-    //     console.log('................. DONE');
-    //     this.ok++;
-    //     // console.log(networks);
-    //     // this.results = networks.map(
-    //     //   (r) => `${r.BSSID} -> ${r.level}, `
-    //     this.results = ble;
-    //     console.log(this.results);
-    //   }, 2100);
-    // } else clearInterval(this.interval);
-    // if (!this.ready) return (this.startService = false);
     // while (this.startService) {
     //   const net = await this.hotspot.scanWifi();
     //   const geoCoord = await this.geoProvider.getGPSLocation();
@@ -79,34 +72,6 @@ export class HomePage {
     //   }
     //   await this.waitFor(5000);
     // }
-    // if (this.startService) {
-    //   await this.wifiProvider.getNetworks();
-    //   this.interval = setInterval(async () => {
-    //     const networks = await this.wifiProvider.getNetworks();
-    //     const geoCoord = await this.geoProvider.getGPSLocation();
-    //     const ble = await this.bleProvider.getBluetoothDevices();
-    //     this.ok++;
-    //     // console.log(networks);
-    //     this.results = networks.map(
-    //       (r) =>
-    //         `${r.BSSID} -> ${r.level}, ` +
-    //         ` bluetooth: { id: ` +
-    //         this.bleProvider.id +
-    //         ` -> rssi: ` +
-    //         this.bleProvider.rssi +
-    //         ` },` +
-    //         ` pos: { lat: ` +
-    //         geoCoord.coords.latitude +
-    //         `,` +
-    //         ` long: ` +
-    //         geoCoord.coords.longitude +
-    //         `,` +
-    //         ` alt: ` +
-    //         geoCoord.coords.altitude +
-    //         ` }`
-    //     );
-    //   }, 2100);
-    // } else clearInterval(this.interval);
   }
 
   waitFor = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
