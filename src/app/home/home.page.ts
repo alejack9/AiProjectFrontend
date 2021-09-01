@@ -16,38 +16,39 @@ export class HomePage {
   ) {}
 
   startService: boolean = false;
-  results: string[] = [];
+  results: Map<string, number>;
   private interval;
   ok = 0;
 
   async startScan() {
-    if (this.startService) {
-      await this.wifiProvider.getNetworks();
-      this.interval = setInterval(async () => {
-        const networks = await this.wifiProvider.getNetworks();
-        const geoCoord = await this.geoProvider.getGPSLocation();
-        const ble = await this.bleProvider.getBluetoothDevices();
-        this.ok++;
-        // console.log(networks);
-        this.results = networks.map(
-          (r) =>
-            `${r.BSSID} -> ${r.level}, ` +
-            ` bluetooth: { id: ` +
-            this.bleProvider.id +
-            ` -> rssi: ` +
-            this.bleProvider.rssi +
-            ` },` +
-            ` pos: { lat: ` +
-            geoCoord.coords.latitude +
-            `,` +
-            ` long: ` +
-            geoCoord.coords.longitude +
-            `,` +
-            ` alt: ` +
-            geoCoord.coords.altitude +
-            ` }`
-        );
-      }, 2100);
-    } else clearInterval(this.interval);
+    console.log(this.startService);
+    while (this.startService) {
+      console.log('WAITING BLUETOOTH DEVICES.................');
+      const ble = await this.bleProvider.getBluetoothDevices();
+      console.log('................. DONE');
+      this.ok++;
+      // console.log(networks);
+      // this.results = networks.map(
+      //   (r) => `${r.BSSID} -> ${r.level}, `
+      // this.results = ble;
+      ble.forEach((val, key) => {
+        console.log(val + ' - ' + key);
+      });
+    }
+    // if (this.startService) {
+    //   this.interval = setInterval(async () => {
+    //     // const networks = await this.wifiProvider.getNetworks();
+    //     // const geoCoord = await this.geoProvider.getLocation();
+    //     console.log('WAITING BLUETOOTH DEVICES.................');
+    //     const ble = await this.bleProvider.getBluetoothDevices();
+    //     console.log('................. DONE');
+    //     this.ok++;
+    //     // console.log(networks);
+    //     // this.results = networks.map(
+    //     //   (r) => `${r.BSSID} -> ${r.level}, `
+    //     this.results = ble;
+    //     console.log(this.results);
+    //   }, 2100);
+    // } else clearInterval(this.interval);
   }
 }
