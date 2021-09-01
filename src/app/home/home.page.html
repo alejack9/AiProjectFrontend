@@ -5,17 +5,75 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <span
-    >OK: {{this.ok}} ; EMPTIES: {{this.empties}} ; ERRORS: {{this.errors}} -
-    {{this.lastError}}</span
-  >
-  <ion-toggle
-    color="primary"
-    [(ngModel)]="startService"
-    (ionChange)="startScan()"
-    >Start Scan</ion-toggle
-  >
-  <ion-list>
-    <ion-item *ngFor="let data of results"> {{data}} </ion-item>
-  </ion-list>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Settings</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Family</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="family"
+          [disabled]="startService"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Room</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="room"
+          [disabled]="startService"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Device</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="device"
+          [disabled]="startService"
+        ></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  <ion-item>
+    <ion-label>Start Service</ion-label>
+    <ion-toggle
+      color="primary"
+      [(ngModel)]="startService"
+      (ionChange)="startScan()"
+    ></ion-toggle>
+  </ion-item>
+  <ion-card>
+    <ion-card-header
+      ><ion-card-title
+        >Last Scan: {{lastScanTime | date:'mediumTime'}}</ion-card-title
+      ></ion-card-header
+    >
+    <ion-card-content>
+      GPS: [{{gpsCoordinates?.lat | number:'0.0-3'}} , {{gpsCoordinates?.long |
+      number:'0.0-3' }}] : {{gpsCoordinates?.alt | number:'0.0-3'}}
+      ({{gpsCoordinates?.accuracy | number:'0.0-3'}})
+      <ion-grid>
+        <ion-row>
+          <ion-col> WIFI </ion-col>
+          <ion-col> BLUETOOTH </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-item *ngFor="let data of wifiSignals"> {{data}} </ion-item>
+            </ion-list></ion-col
+          >
+          <ion-col>
+            <ion-list>
+              <ion-item *ngFor="let data of bluetoothSignals">
+                {{data}}
+              </ion-item>
+            </ion-list></ion-col
+          >
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
