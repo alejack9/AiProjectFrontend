@@ -1,5 +1,5 @@
 {
-  "name": "AiFrontend",
+  "name": "ai-frontend",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -26,6 +26,8 @@
     "@capacitor/haptics": "1.0.2",
     "@capacitor/keyboard": "1.0.2",
     "@capacitor/status-bar": "1.0.2",
+    "@ionic-native/hotspot": "^5.36.0",
+    "cordova-plugin-hotspot": "^1.2.10",
     "@ionic-native/ble": "^5.36.0",
     "@ionic-native/bluetooth-le": "^5.36.0",
     "@ionic-native/geolocation": "^5.36.0",

@@ -1,3 +1,4 @@
+import { Hotspot } from '@ionic-native/hotspot/ngx';
 import { GeolocalizationProviderService } from './../services/geolocalization-provider.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 
@@ -5,8 +6,6 @@ import { BluetoothProviderService } from './../services/bluetooth-provider.servi
 import { BLE } from '@ionic-native/ble/ngx';
 
 import { WifiProviderService } from './../services/wifi-provider.service';
-import { WifiWizard2 } from '@ionic-native/wifi-wizard-2/ngx';
-
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
@@ -19,12 +18,12 @@ import { HomePageRoutingModule } from './home-routing.module';
   imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
   declarations: [HomePage],
   providers: [
-    WifiWizard2,
     WifiProviderService,
     BluetoothProviderService,
     Geolocation,
     BLE,
     GeolocalizationProviderService,
+    Hotspot,
   ],
 })
 export class HomePageModule {}

@@ -5,6 +5,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <span
+    >OK: {{this.ok}} ; EMPTIES: {{this.empties}} ; ERRORS: {{this.errors}} -
+    {{this.lastError}}</span
+  >
   <ion-toggle
     color="primary"
     [(ngModel)]="startService"
