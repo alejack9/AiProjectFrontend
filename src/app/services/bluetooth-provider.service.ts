@@ -9,12 +9,12 @@ import { Observable, Subscription } from 'rxjs';
 export class BluetoothProviderService {
   constructor(private ble: BLE) {}
 
-  async getBluetoothDevices(): Promise<Map<string, number>> {
+  async getBluetoothDevices(): Promise<{ id: string; rssi: number }[]> {
     return new Promise((resolve) => {
-      let res = new Map<string, number>();
+      let res = [];
       this.ble.scan([], 5).subscribe({
         next: (device) => {
-          res.set(device.id, device.rssi);
+          res.push({ id: device.id, rssi: device.rssi });
         },
         complete: () => {
           resolve(res);
@@ -22,7 +22,7 @@ export class BluetoothProviderService {
       });
       setTimeout(() => {
         resolve(res);
-      }, 6000);
+      }, 5_250);
     });
   }
 }
