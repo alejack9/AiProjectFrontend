@@ -1,15 +1,33 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Blank </ion-title>
+    <ion-title> AI Project 2021 </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Settings</ion-card-title>
+      <ion-card-title>Setup</ion-card-title>
     </ion-card-header>
     <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Server Address</ion-label>
+        <ion-input
+          position="start"
+          type="text"
+          [(ngModel)]="url"
+          [disabled]="startService"
+        ></ion-input>
+        <!-- <ion-button position="end">Check</ion-button> -->
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Device</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="device"
+          [disabled]="startService"
+        ></ion-input>
+      </ion-item>
       <ion-item>
         <ion-label position="floating">Family</ion-label>
         <ion-input
@@ -26,34 +44,42 @@
           [disabled]="startService"
         ></ion-input>
       </ion-item>
-      <ion-item>
-        <ion-label position="floating">Device</ion-label>
-        <ion-input
-          type="text"
-          [(ngModel)]="device"
-          [disabled]="startService"
-        ></ion-input>
-      </ion-item>
     </ion-card-content>
   </ion-card>
   <ion-item>
     <ion-label>Start Service</ion-label>
     <ion-toggle
       color="primary"
+      id="startServiceToggle"
+      #startServiceToggle
       [(ngModel)]="startService"
       (ionChange)="startScan()"
+      [disabled]="isStartServiceToggleDisabled()"
     ></ion-toggle>
   </ion-item>
   <ion-card>
-    <ion-card-header
-      ><ion-card-title
-        >Last Scan: {{lastScanTime | date:'mediumTime'}}</ion-card-title
-      ></ion-card-header
-    >
+    <ion-card-header><ion-card-title></ion-card-title></ion-card-header>
     <ion-card-content>
-      GPS: [{{gpsCoordinates?.lat | number:'0.0-3'}} , {{gpsCoordinates?.long |
-      number:'0.0-3' }}] : {{gpsCoordinates?.alt | number:'0.0-3'}}
-      ({{gpsCoordinates?.accuracy | number:'0.0-3'}})
+      <ion-grid>
+        <ion-row>
+          <ion-col>Last Successfull Scan</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>{{lastSuccessfullScanTime | date:'mediumTime'}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Last Scan</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>{{lastScanTime | date:'mediumTime'}}</ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-item
+        >GPS: [{{gpsCoordinates?.lat| number:'0.0-3'}} , {{gpsCoordinates?.lon |
+        number:'0.0-3' }}] : {{gpsCoordinates?.alt | number:'0.0-3'}}
+        ({{gpsCoordinates?.accuracy | number:'0.0-3'}})</ion-item
+      >
+      <ion-item *ngIf="error">{{error}}</ion-item>
       <ion-grid>
         <ion-row>
           <ion-col> WIFI </ion-col>
