@@ -1,3 +1,5 @@
+import { InformationSenderService } from './../services/information-sender.service';
+import { HttpClientModule } from '@angular/common/http';
 import { Hotspot } from '@ionic-native/hotspot/ngx';
 import { GeolocalizationProviderService } from './../services/geolocalization-provider.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -15,7 +17,13 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    HomePageRoutingModule,
+    HttpClientModule,
+  ],
   declarations: [HomePage],
   providers: [
     WifiProviderService,
@@ -23,6 +31,7 @@ import { HomePageRoutingModule } from './home-routing.module';
     Geolocation,
     BLE,
     GeolocalizationProviderService,
+    InformationSenderService,
     Hotspot,
   ],
 })
