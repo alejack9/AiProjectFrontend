@@ -7,12 +7,12 @@ import { BLE } from '@ionic-native/ble/ngx';
 export class BluetoothProviderService {
   constructor(private ble: BLE) {}
 
-  async getBluetoothDevices(): Promise<Map<string, number>> {
+  async getBluetoothDevices(): Promise<[string, number][]> {
     return new Promise((resolve) => {
-      let res = new Map<string, number>();
+      let res = [];
       this.ble.scan([], 5).subscribe({
         next: (device) => {
-          res.set(device.id, device.rssi);
+          res.push([device.id, device.rssi]);
         },
         complete: () => {
           resolve(res);
