@@ -113,7 +113,7 @@ export class HomePage {
     }
   }
 
-  makeDto = (ble, net, gpsCoordinates): DataDTO => {
+  private makeDto = (ble, net, gpsCoordinates): DataDTO => {
     return {
       d: this.device,
       f: this.family,
