@@ -2,8 +2,9 @@ import { DataDTO } from './../../models/data-dto';
 import { GpsCoordinates } from './../../models/gps-coordinates';
 import { InformationSenderService } from './../services/information-sender.service';
 import { WifiProviderService } from './../services/wifi-provider.service';
-import { Platform } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Vibration } from '@ionic-native/vibration/ngx';
 import { BluetoothProviderService } from '../services/bluetooth-provider.service';
 import { GeolocalizationProviderService } from '../services/geolocalization-provider.service';
 
@@ -18,7 +19,9 @@ export class HomePage {
     private geoProvider: GeolocalizationProviderService,
     private bleProvider: BluetoothProviderService,
     private wifiProvider: WifiProviderService,
-    private informationSender: InformationSenderService
+    private informationSender: InformationSenderService,
+    private vibration: Vibration,
+    public alertController: AlertController
   ) {
     this.platform.ready().then(() => {
       this.ready = true;
@@ -30,21 +33,19 @@ export class HomePage {
   private viewReady = false;
   startService: boolean = false;
   startServiceToggleDisabled = false;
-
-  isStartServiceToggleDisabled() {
-    return (
-      this.url === '' ||
-      this.device === '' ||
-      this.family === '' ||
-      this.room === '' ||
-      this.startServiceToggleDisabled
-    );
-  }
+  stopServiceIfEmptyResponses = true;
 
   url = '';
   family = '';
   room = '';
   device = '';
+
+  isStartServiceToggleDisabled = () =>
+    this.url === '' ||
+    this.device === '' ||
+    this.family === '' ||
+    this.room === '' ||
+    this.startServiceToggleDisabled;
 
   wifiSignals: string[] = [];
   bluetoothSignals: string[] = [];
@@ -79,27 +80,46 @@ export class HomePage {
 
   async startScan() {
     if (!this.ready || !this.viewReady) return (this.startService = false);
+    let empyWifis = 0;
     while (this.startService) {
       this.startServiceToggleDisabled = true;
       this.error = undefined;
       try {
         const net = await this.getWifi();
+        if (net.length === 0) empyWifis++;
         const ble = await this.getBluetooth();
         const gpsCoordinates = await this.getGPS();
         this.lastScanTime = Date.now();
 
-        const obj: DataDTO = this.makeDto(ble, net, gpsCoordinates);
+        if (
+          (this.stopServiceIfEmptyResponses &&
+            net.length === 0 &&
+            ble.length === 0) ||
+          empyWifis >= 3
+        ) {
+          await (
+            await this.alertController.create({
+              header: 'Restart wifi and bluetooth',
+              message: 'Restart wifi and bluetooth now.',
+              buttons: ['OK'],
+            })
+          ).present();
+          this.vibration.vibrate([500, 500, 500, 500, 500]);
+          this.startService = false;
+        } else {
+          const obj: DataDTO = this.makeDto(ble, net, gpsCoordinates);
 
-        await this.informationSender.send(obj, this.url);
+          await this.informationSender.send(obj, this.url);
 
-        this.bluetoothSignals = Array.from(ble).map(
-          (val) => `${val[0]} - ${val[1]}`
-        );
-        this.wifiSignals = Array.from(net).map(
-          (val) => `${val[0]} - ${val[1]}`
-        );
-        this.gpsCoordinates = gpsCoordinates;
-        this.lastSuccessfullScanTime = this.lastScanTime;
+          this.bluetoothSignals = Array.from(ble).map(
+            (val) => `${val[0]} - ${val[1]}`
+          );
+          this.wifiSignals = Array.from(net).map(
+            (val) => `${val[0]} - ${val[1]}`
+          );
+          this.gpsCoordinates = gpsCoordinates;
+          this.lastSuccessfullScanTime = this.lastScanTime;
+        }
       } catch (e) {
         this.wifiSignals = ['ERROR'];
         this.bluetoothSignals = ['ERROR'];
@@ -113,7 +133,11 @@ export class HomePage {
     }
   }
 
-  private makeDto = (ble, net, gpsCoordinates): DataDTO => {
+  private makeDto = (
+    ble: [string, number][],
+    net: [string, number][],
+    gpsCoordinates: GpsCoordinates
+  ): DataDTO => {
     return {
       d: this.device,
       f: this.family,

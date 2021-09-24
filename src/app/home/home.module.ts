@@ -1,3 +1,4 @@
+import { Vibration } from '@ionic-native/vibration/ngx';
 import { InformationSenderService } from './../services/information-sender.service';
 import { HttpClientModule } from '@angular/common/http';
 import { Hotspot } from '@ionic-native/hotspot/ngx';
@@ -29,6 +30,7 @@ import { HomePageRoutingModule } from './home-routing.module';
     WifiProviderService,
     BluetoothProviderService,
     Geolocation,
+    Vibration,
     BLE,
     GeolocalizationProviderService,
     InformationSenderService,
