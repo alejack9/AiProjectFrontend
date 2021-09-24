@@ -124,7 +124,7 @@ export class HomePage {
         this.wifiSignals = ['ERROR'];
         this.bluetoothSignals = ['ERROR'];
         this.gpsCoordinates = {};
-        console.log(e);
+        console.log(JSON.stringify(e));
         this.error = JSON.stringify(e);
       } finally {
         this.startServiceToggleDisabled = false;

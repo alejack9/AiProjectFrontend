@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { HomePageRoutingModule } from './home-routing.module';
   ],
   declarations: [HomePage],
   providers: [
+    HTTP,
     WifiProviderService,
     BluetoothProviderService,
     Geolocation,
